@@ -135,4 +135,4 @@ rank_at_u = ui.label()
 
 rank_after_u = ui.label()
 
-ui.run()
+ui.run(title="SENG Y1 GPA rank lookup")
