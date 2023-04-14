@@ -118,6 +118,9 @@ cga_scores_3
 
 with open('data_output.json', 'w') as f:
     json.dump(cga_scores_3, f)
+
+
+
 # for debug and visualization purposes.
 """for item in cga_scores_3:
     if item[1] > 0.00000000001:

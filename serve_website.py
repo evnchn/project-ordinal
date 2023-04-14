@@ -140,5 +140,28 @@ async def private_page():
     rank_at_u = ui.label()
 
     rank_after_u = ui.label()
+    
+    
+    
+with open('MATH1014_results_percentage.json', 'r') as f:
+    m1014data = json.load(f)
 
-ui.run(title="SENG Y1 GPA rank lookup")
+@ui.page('/math1014mt')
+async def private_page():
+    
+    def update_results(scorein):
+        try:
+            percentage_disp.set_text(f'Percentage: top {(m1014data[int(scorein.value)]*100):.2f}%' )
+            stud_disp.set_text(f'Rank: {(m1014data[int(scorein.value)]*1192):.0f} / 1192')
+        except:
+            percentage_disp.set_text("Enter an integer")
+            stud_disp.set_text("")
+
+    ui.label("MATH1014 MT score percentage lookup").classes("text-2xl")
+    ui.input(label='Enter MT score', placeholder='XX',
+            on_change=update_results,
+            validation={})
+    percentage_disp = ui.label()
+    stud_disp = ui.label()
+
+ui.run(title="Project Ordinal")
