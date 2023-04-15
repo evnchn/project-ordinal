@@ -15,7 +15,15 @@ print(scores)
 
 scores_interpolate = np.arange(0, 101)
 
-interp_results = np.interp(scores_interpolate, scores, cumulative_freq)
+#interp_results = np.interp(scores_interpolate, scores, cumulative_freq)
+
+from scipy.interpolate import interp1d
+
+# Create a cubic spline interpolation function
+f = interp1d(scores, cumulative_freq, kind='cubic')
+
+# Evaluate the function at the desired points
+interp_results = f(scores_interpolate)
 
 print(interp_results)
 

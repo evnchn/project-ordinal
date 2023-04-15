@@ -146,6 +146,9 @@ async def private_page():
 with open('MATH1014_results_percentage.json', 'r') as f:
     m1014data = json.load(f)
 
+with open('MATH1014_results_percentage_cubic.json', 'r') as f:
+    m1014data_2 = json.load(f)
+
 @ui.page('/math1014mt')
 async def private_page():
     
@@ -156,12 +159,24 @@ async def private_page():
         except:
             percentage_disp.set_text("Enter an integer")
             stud_disp.set_text("")
+        try:
+            percentage_disp_2.set_text(f'Percentage: top {(m1014data_2[int(scorein.value)]*100):.2f}%' )
+            stud_disp_2.set_text(f'Rank: {(m1014data_2[int(scorein.value)]*1192):.0f} / 1192')
+        except:
+            percentage_disp_2.set_text("Enter an integer")
+            stud_disp_2.set_text("")
 
     ui.label("MATH1014 MT score percentage lookup").classes("text-2xl")
     ui.input(label='Enter MT score', placeholder='XX',
             on_change=update_results,
             validation={})
+    ui.label("Old linear interpolation")
     percentage_disp = ui.label()
     stud_disp = ui.label()
+
+    ui.label("New cubic interpolation")
+    percentage_disp_2 = ui.label()
+    stud_disp_2 = ui.label()
+
 
 ui.run(title="Project Ordinal")
