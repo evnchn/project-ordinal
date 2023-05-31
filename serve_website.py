@@ -143,31 +143,66 @@ async def private_page():
     
     
     
-with open('MATH1014_results_percentage.json', 'r') as f:
-    m1014data = json.load(f)
+with open('MATH1014MT_results_percentage.json', 'r') as f:
+    m1014mtdata = json.load(f)
 
-with open('MATH1014_results_percentage_cubic.json', 'r') as f:
-    m1014data_2 = json.load(f)
+with open('MATH1014MT_results_percentage_cubic.json', 'r') as f:
+    m1014mtdata_2 = json.load(f)
 
 @ui.page('/math1014mt')
 async def private_page():
     
     def update_results(scorein):
         try:
-            percentage_disp.set_text(f'Percentage: top {(m1014data[int(scorein.value)]*100):.2f}%' )
-            stud_disp.set_text(f'Rank: {(m1014data[int(scorein.value)]*1192):.0f} / 1192')
+            percentage_disp.set_text(f'Percentage: top {(m1014mtdata[int(scorein.value)]*100):.2f}%' )
+            stud_disp.set_text(f'Rank: {(m1014mtdata[int(scorein.value)]*1192):.0f} / 1192')
         except:
             percentage_disp.set_text("Enter an integer")
             stud_disp.set_text("")
         try:
-            percentage_disp_2.set_text(f'Percentage: top {(m1014data_2[int(scorein.value)]*100):.2f}%' )
-            stud_disp_2.set_text(f'Rank: {(m1014data_2[int(scorein.value)]*1192):.0f} / 1192')
+            percentage_disp_2.set_text(f'Percentage: top {(m1014mtdata_2[int(scorein.value)]*100):.2f}%' )
+            stud_disp_2.set_text(f'Rank: {(m1014mtdata_2[int(scorein.value)]*1192):.0f} / 1192')
         except:
             percentage_disp_2.set_text("Enter an integer")
             stud_disp_2.set_text("")
 
     ui.label("MATH1014 MT score percentage lookup").classes("text-2xl")
     ui.input(label='Enter MT score', placeholder='XX',
+            on_change=update_results,
+            validation={})
+    ui.label("Old linear interpolation")
+    percentage_disp = ui.label()
+    stud_disp = ui.label()
+
+    ui.label("New cubic interpolation")
+    percentage_disp_2 = ui.label()
+    stud_disp_2 = ui.label()
+
+with open('MATH1014FN_results_percentage.json', 'r') as f:
+    m1014fndata = json.load(f)
+
+with open('MATH1014FN_results_percentage_cubic.json', 'r') as f:
+    m1014fndata_2 = json.load(f)
+
+@ui.page('/math1014fn')
+async def private_page():
+    
+    def update_results(scorein):
+        try:
+            percentage_disp.set_text(f'Percentage: top {(m1014fndata[int(scorein.value)]*100):.2f}%' )
+            stud_disp.set_text(f'Rank: {(m1014fndata[int(scorein.value)]*1192):.0f} / 1192')
+        except:
+            percentage_disp.set_text("Enter an integer")
+            stud_disp.set_text("")
+        try:
+            percentage_disp_2.set_text(f'Percentage: top {(m1014fndata_2[int(scorein.value)]*100):.2f}%' )
+            stud_disp_2.set_text(f'Rank: {(m1014fndata_2[int(scorein.value)]*1192):.0f} / 1192')
+        except:
+            percentage_disp_2.set_text("Enter an integer")
+            stud_disp_2.set_text("")
+
+    ui.label("MATH1014 FN score percentage lookup").classes("text-2xl")
+    ui.input(label='Enter FN score', placeholder='XX',
             on_change=update_results,
             validation={})
     ui.label("Old linear interpolation")

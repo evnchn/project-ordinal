@@ -1,7 +1,7 @@
 import numpy as np
 
 # Define the bin counts
-bin_counts = np.array([0, 22, 61, 132, 151, 159, 201, 180, 163, 91, 32])
+bin_counts = np.array([0, 2, 12, 9, 25, 40, 24, 48, 44, 59, 68, 70, 94, 81, 107, 96, 120, 84, 71, 63, 49])
 
 # Compute the cumulative sum of the bin counts
 cumulative_freq = np.cumsum(bin_counts)
@@ -9,7 +9,7 @@ cumulative_freq = np.cumsum(bin_counts)
 # Print the cumulative frequency
 print(cumulative_freq)
 
-scores = np.arange(0, 110, 10)
+scores = np.arange(0, 105, 5)
 
 print(scores)
 
@@ -35,7 +35,7 @@ print(interp_results_percentage[80])
 
 import json
 
-with open('MATH1014MT_results_percentage_cubic.json', 'w') as f:
+with open('MATH1014FN_results_percentage_cubic.json', 'w') as f:
     json.dump(list(interp_results_percentage), f)
 
 interp_results = np.interp(scores_interpolate, scores, cumulative_freq)
@@ -50,5 +50,5 @@ print(interp_results_percentage[80])
 
 import json
 
-with open('MATH1014MT_results_percentage.json', 'w') as f:
+with open('MATH1014FN_results_percentage.json', 'w') as f:
     json.dump(list(interp_results_percentage), f)
