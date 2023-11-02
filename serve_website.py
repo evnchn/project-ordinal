@@ -1,6 +1,9 @@
 from nicegui import ui
 
 
+3348911145
+
+from fractions import Fraction
 import json
 
 with open('data_output.json', 'r') as f:
@@ -213,5 +216,40 @@ async def private_page():
     percentage_disp_2 = ui.label()
     stud_disp_2 = ui.label()
 
+
+with open('COMP2012HMT_results_percentage.json', 'r') as f:
+    comp2012hmtdata = json.load(f)
+
+with open('COMP2012HMT_results_percentage_cubic.json', 'r') as f:
+    comp2012hmtdata_2 = json.load(f)
+
+@ui.page('/comp2012hmt')
+async def private_page():
+    
+    def update_results(scorein):
+        try:
+            percentage_disp.set_text(f'Percentage: top {(comp2012hmtdata[int(Fraction(scorein.value)*4)]*100):.2f}%' )
+            stud_disp.set_text(f'Rank: {(comp2012hmtdata[int(Fraction(scorein.value)*4)]*53):.0f} / 53')
+        except:
+            percentage_disp.set_text("Enter an number with 0.25 increment")
+            stud_disp.set_text("")
+        try:
+            percentage_disp_2.set_text(f'Percentage: top {(comp2012hmtdata_2[int(Fraction(scorein.value)*4)]*100):.2f}%' )
+            stud_disp_2.set_text(f'Rank: {(comp2012hmtdata_2[int(Fraction(scorein.value)*4)]*53):.0f} / 53')
+        except:
+            percentage_disp_2.set_text("Enter an number with 0.25 increment")
+            stud_disp_2.set_text("")
+
+    ui.label("COMP2012H MT score percentage lookup").classes("text-2xl")
+    ui.input(label='Enter MT score', placeholder='XX',
+            on_change=update_results,
+            validation={})
+    ui.label("Old linear interpolation")
+    percentage_disp = ui.label()
+    stud_disp = ui.label()
+
+    ui.label("New cubic interpolation")
+    percentage_disp_2 = ui.label()
+    stud_disp_2 = ui.label()
 
 ui.run(title="Project Ordinal")
