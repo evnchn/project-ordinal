@@ -17,6 +17,7 @@ rank720.sort(reverse=True)
 def dark_page_setup():
     ui.dark_mode(True)
     ui.query("body").classes("bg-gray-950")
+    ui.query(".nicegui-content").classes("p-0 gap-0")
 
 
 def page_header(title, subtitle=None):
@@ -36,26 +37,16 @@ def nav_bar():
 async def private_page():
     global rank720
 
-    def is_float(str_in):
-        if not str_in:
+    def range_check(value):
+        if value is None:
             return False
-        try:
-            float(str_in)
-            return True
-        except:
-            return False
+        return not (round(value*720) > 3096 or round(value*720) < 0)
 
-    def range_check(str_in):
-        if not str_in:
-            return False
-        return not (round(float(str_in)*720) > 3096 or round(float(str_in)*720) < 0)
-
-    def get_closest_720frac(str_in):
-        float_in = float(str_in)
-        times720 = float_in*720
+    def get_closest_720frac(value):
+        times720 = value*720
         times720_low = int(times720)
         times720_high = times720_low + 1
-        if abs((times720_low/720) - float_in) < abs((times720_high/720) - float_in):
+        if abs((times720_low/720) - value) < abs((times720_high/720) - value):
             return times720_low
         else:
             return times720_high
@@ -67,7 +58,7 @@ async def private_page():
         return len(numbers)-1, len(numbers)-2
 
     def update_results(e):
-        if not e.value:
+        if e.value is None:
             return
         r720 = get_closest_720frac(e.value)
         result.set_text('{}/720'.format(r720))
@@ -119,8 +110,8 @@ async def private_page():
 
         results_card.set_visibility(True)
 
-    def is_filled(input):
-        if input:
+    def is_filled(value):
+        if value is not None:
             return True
         else:
             for elem in (result, result2, rank_before_u, rank_at_u, rank_after_u):
@@ -136,9 +127,9 @@ async def private_page():
         with ui.card().classes("w-full p-8 rounded-2xl bg-gray-900 border border-gray-800"):
             ui.label("Enter your GPA").classes("text-lg font-semibold text-cyan-400 mb-2")
             ui.label("Fall 2022 cohort \u2022 852 students").classes("text-sm text-gray-500 mb-4")
-            ui.input(label='GPA', placeholder='e.g. 3.500',
+            ui.number(label='GPA', placeholder='e.g. 3.500',
                     on_change=update_results,
-                    validation={'Input too long': lambda value: len(value) < 20, 'Empty input': is_filled, 'Not a number': is_float, 'Out of range': range_check}
+                    validation={'Empty input': is_filled, 'Out of range': range_check}
                     ).classes("w-full text-lg")
 
         results_card = ui.card().classes("w-full p-8 rounded-2xl mt-4 bg-gray-900 border border-gray-800")
@@ -177,6 +168,8 @@ with open('MATH1014MT_results_percentage_cubic.json', 'r') as f:
 
 def exam_page(title, subtitle, label, placeholder, data_linear, data_cubic, total_students):
     def update_results(scorein):
+        if scorein.value is None:
+            return
         try:
             pct = data_linear[int(scorein.value)] * 100
             percentage_disp.set_text(f'Top {pct:.2f}%')
@@ -201,7 +194,7 @@ def exam_page(title, subtitle, label, placeholder, data_linear, data_cubic, tota
         with ui.card().classes("w-full p-8 rounded-2xl bg-gray-900 border border-gray-800"):
             ui.label(label).classes("text-lg font-semibold text-cyan-400 mb-2")
             ui.label(subtitle).classes("text-sm text-gray-500 mb-4")
-            ui.input(label='Score', placeholder=placeholder,
+            ui.number(label='Score', placeholder=placeholder,
                     on_change=update_results,
                     validation={}).classes("w-full text-lg")
 
@@ -245,6 +238,8 @@ with open('COMP2012HMT_results_percentage_cubic.json', 'r') as f:
 @ui.page('/comp2012hmt')
 async def comp2012hmt_page():
     def update_results(scorein):
+        if scorein.value is None:
+            return
         try:
             pct = comp2012hmtdata[int(Fraction(scorein.value)*4)] * 100
             percentage_disp.set_text(f'Top {pct:.2f}%')
@@ -269,7 +264,7 @@ async def comp2012hmt_page():
         with ui.card().classes("w-full p-8 rounded-2xl bg-gray-900 border border-gray-800"):
             ui.label("Enter your midterm score").classes("text-lg font-semibold text-cyan-400 mb-2")
             ui.label("53 students \u2022 0.25 increment").classes("text-sm text-gray-500 mb-4")
-            ui.input(label='Score', placeholder='e.g. 75',
+            ui.number(label='Score', placeholder='e.g. 75',
                     on_change=update_results,
                     validation={}).classes("w-full text-lg")
 
