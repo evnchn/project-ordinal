@@ -236,14 +236,14 @@ def exam_page(course):
             idx = int(e.value / interp_step)
             pct_disp.set_text(f'Top {data_linear[idx] * 100:.2f}%')
             stud_disp.set_text(f'{data_linear[idx] * total_students:.0f} / {total_students}')
-        except Exception:
+        except (IndexError, ValueError):
             pct_disp.set_text('-')
             stud_disp.set_text('')
         try:
             idx = int(e.value / interp_step)
             pct_disp_2.set_text(f'Top {data_cubic[idx] * 100:.2f}%')
             stud_disp_2.set_text(f'{data_cubic[idx] * total_students:.0f} / {total_students}')
-        except Exception:
+        except (IndexError, ValueError):
             pct_disp_2.set_text('-')
             stud_disp_2.set_text('')
         results_card.set_visibility(True)
