@@ -14,19 +14,22 @@ rank720 = [x[1] for x in cga_data]
 rank720.sort(reverse=True)
 
 
+def dark_page_setup():
+    ui.dark_mode(True)
+    ui.query("body").classes("bg-gray-950")
+
+
 def page_header(title, subtitle=None):
-    with ui.column().classes("w-full items-center bg-gradient-to-r from-indigo-600 to-blue-500 py-10 px-4 rounded-b-2xl shadow-lg mb-8"):
-        ui.label(title).classes("text-4xl font-bold text-white tracking-tight")
+    with ui.column().classes("w-full items-center py-10 px-4 mb-8 bg-gradient-to-br from-gray-900 via-gray-900 to-cyan-950 border-b border-cyan-500/30"):
+        ui.label(title).classes("text-4xl font-bold text-cyan-400 tracking-tight")
         if subtitle:
-            ui.label(subtitle).classes("text-blue-100 text-lg mt-1")
+            ui.label(subtitle).classes("text-gray-400 text-lg mt-1")
 
 
 def nav_bar():
     with ui.row().classes("w-full max-w-2xl mx-auto gap-2 flex-wrap justify-center mb-6"):
-        ui.link("GPA Rank", "/").classes("px-4 py-2 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-medium text-sm no-underline")
-        ui.link("MATH1014 MT", "/math1014mt").classes("px-4 py-2 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-medium text-sm no-underline")
-        ui.link("MATH1014 FN", "/math1014fn").classes("px-4 py-2 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-medium text-sm no-underline")
-        ui.link("COMP2012H MT", "/comp2012hmt").classes("px-4 py-2 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-medium text-sm no-underline")
+        for label, href in [("GPA Rank", "/"), ("MATH1014 MT", "/math1014mt"), ("MATH1014 FN", "/math1014fn"), ("COMP2012H MT", "/comp2012hmt")]:
+            ui.link(label, href).classes("px-4 py-2 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-900 hover:border-cyan-400 font-medium text-sm no-underline transition-colors")
 
 
 @ui.page('/')
@@ -125,43 +128,44 @@ async def private_page():
             results_card.set_visibility(False)
             return False
 
+    dark_page_setup()
     page_header("Project Ordinal", "SENG Y1 GPA Rank Lookup")
     nav_bar()
 
     with ui.column().classes("w-full max-w-2xl mx-auto px-4"):
-        with ui.card().classes("w-full p-8 shadow-md rounded-2xl"):
-            ui.label("Enter your GPA").classes("text-lg font-semibold text-gray-700 mb-2")
-            ui.label("Fall 2022 cohort \u2022 852 students").classes("text-sm text-gray-400 mb-4")
+        with ui.card().classes("w-full p-8 rounded-2xl bg-gray-900 border border-gray-800"):
+            ui.label("Enter your GPA").classes("text-lg font-semibold text-cyan-400 mb-2")
+            ui.label("Fall 2022 cohort \u2022 852 students").classes("text-sm text-gray-500 mb-4")
             ui.input(label='GPA', placeholder='e.g. 3.500',
                     on_change=update_results,
                     validation={'Input too long': lambda value: len(value) < 20, 'Empty input': is_filled, 'Not a number': is_float, 'Out of range': range_check}
                     ).classes("w-full text-lg")
 
-        results_card = ui.card().classes("w-full p-8 shadow-md rounded-2xl mt-4")
+        results_card = ui.card().classes("w-full p-8 rounded-2xl mt-4 bg-gray-900 border border-gray-800")
         results_card.set_visibility(False)
         with results_card:
-            ui.label("Results").classes("text-lg font-semibold text-gray-700 mb-4")
+            ui.label("Results").classes("text-lg font-semibold text-cyan-400 mb-4")
 
             with ui.grid(columns=2).classes("w-full gap-4"):
-                with ui.column().classes("bg-indigo-50 rounded-xl p-4"):
-                    ui.label("GPA Fraction").classes("text-xs font-medium text-indigo-400 uppercase tracking-wide")
-                    result = ui.label().classes("text-2xl font-bold text-indigo-700")
-                with ui.column().classes("bg-blue-50 rounded-xl p-4"):
-                    ui.label("GPA Score").classes("text-xs font-medium text-blue-400 uppercase tracking-wide")
-                    result2 = ui.label().classes("text-2xl font-bold text-blue-700")
+                with ui.column().classes("bg-cyan-950/50 rounded-xl p-4 border border-cyan-500/20"):
+                    ui.label("GPA Fraction").classes("text-xs font-medium text-cyan-500 uppercase tracking-wide")
+                    result = ui.label().classes("text-2xl font-bold text-cyan-300")
+                with ui.column().classes("bg-cyan-950/50 rounded-xl p-4 border border-cyan-500/20"):
+                    ui.label("GPA Score").classes("text-xs font-medium text-cyan-500 uppercase tracking-wide")
+                    result2 = ui.label().classes("text-2xl font-bold text-cyan-300")
 
             ui.separator().classes("my-4")
 
             with ui.grid(columns=3).classes("w-full gap-4"):
-                with ui.column().classes("bg-green-50 rounded-xl p-4 items-center"):
-                    ui.label("Rank Above").classes("text-xs font-medium text-green-500 uppercase tracking-wide")
-                    rank_before_u = ui.label().classes("text-sm font-semibold text-green-700 text-center")
-                with ui.column().classes("bg-amber-50 rounded-xl p-4 items-center"):
-                    ui.label("Your Rank").classes("text-xs font-medium text-amber-500 uppercase tracking-wide")
-                    rank_at_u = ui.label().classes("text-xl font-bold text-amber-700 text-center")
-                with ui.column().classes("bg-red-50 rounded-xl p-4 items-center"):
-                    ui.label("Rank Below").classes("text-xs font-medium text-red-400 uppercase tracking-wide")
-                    rank_after_u = ui.label().classes("text-sm font-semibold text-red-700 text-center")
+                with ui.column().classes("bg-emerald-950/40 rounded-xl p-4 items-center border border-emerald-500/20"):
+                    ui.label("Rank Above").classes("text-xs font-medium text-emerald-400 uppercase tracking-wide")
+                    rank_before_u = ui.label().classes("text-sm font-semibold text-emerald-300 text-center")
+                with ui.column().classes("bg-cyan-950/60 rounded-xl p-4 items-center border border-cyan-400/40"):
+                    ui.label("Your Rank").classes("text-xs font-medium text-cyan-400 uppercase tracking-wide")
+                    rank_at_u = ui.label().classes("text-xl font-bold text-cyan-300 text-center")
+                with ui.column().classes("bg-rose-950/40 rounded-xl p-4 items-center border border-rose-500/20"):
+                    ui.label("Rank Below").classes("text-xs font-medium text-rose-400 uppercase tracking-wide")
+                    rank_after_u = ui.label().classes("text-sm font-semibold text-rose-300 text-center")
 
 
 with open('MATH1014MT_results_percentage.json', 'r') as f:
@@ -189,30 +193,31 @@ def exam_page(title, subtitle, label, placeholder, data_linear, data_cubic, tota
             stud_disp_2.set_text("")
         results_card.set_visibility(True)
 
+    dark_page_setup()
     page_header("Project Ordinal", title)
     nav_bar()
 
     with ui.column().classes("w-full max-w-2xl mx-auto px-4"):
-        with ui.card().classes("w-full p-8 shadow-md rounded-2xl"):
-            ui.label(label).classes("text-lg font-semibold text-gray-700 mb-2")
-            ui.label(subtitle).classes("text-sm text-gray-400 mb-4")
+        with ui.card().classes("w-full p-8 rounded-2xl bg-gray-900 border border-gray-800"):
+            ui.label(label).classes("text-lg font-semibold text-cyan-400 mb-2")
+            ui.label(subtitle).classes("text-sm text-gray-500 mb-4")
             ui.input(label='Score', placeholder=placeholder,
                     on_change=update_results,
                     validation={}).classes("w-full text-lg")
 
-        results_card = ui.card().classes("w-full p-8 shadow-md rounded-2xl mt-4")
+        results_card = ui.card().classes("w-full p-8 rounded-2xl mt-4 bg-gray-900 border border-gray-800")
         results_card.set_visibility(False)
         with results_card:
-            ui.label("Results").classes("text-lg font-semibold text-gray-700 mb-4")
+            ui.label("Results").classes("text-lg font-semibold text-cyan-400 mb-4")
             with ui.grid(columns=2).classes("w-full gap-6"):
-                with ui.column().classes("bg-blue-50 rounded-xl p-5"):
-                    ui.label("Linear Interpolation").classes("text-xs font-medium text-blue-400 uppercase tracking-wide mb-2")
-                    percentage_disp = ui.label().classes("text-2xl font-bold text-blue-700")
-                    stud_disp = ui.label().classes("text-sm text-blue-500 mt-1")
-                with ui.column().classes("bg-indigo-50 rounded-xl p-5"):
-                    ui.label("Cubic Interpolation").classes("text-xs font-medium text-indigo-400 uppercase tracking-wide mb-2")
-                    percentage_disp_2 = ui.label().classes("text-2xl font-bold text-indigo-700")
-                    stud_disp_2 = ui.label().classes("text-sm text-indigo-500 mt-1")
+                with ui.column().classes("bg-cyan-950/50 rounded-xl p-5 border border-cyan-500/20"):
+                    ui.label("Linear Interpolation").classes("text-xs font-medium text-cyan-500 uppercase tracking-wide mb-2")
+                    percentage_disp = ui.label().classes("text-2xl font-bold text-cyan-300")
+                    stud_disp = ui.label().classes("text-sm text-cyan-600 mt-1")
+                with ui.column().classes("bg-teal-950/50 rounded-xl p-5 border border-teal-500/20"):
+                    ui.label("Cubic Interpolation").classes("text-xs font-medium text-teal-500 uppercase tracking-wide mb-2")
+                    percentage_disp_2 = ui.label().classes("text-2xl font-bold text-teal-300")
+                    stud_disp_2 = ui.label().classes("text-sm text-teal-600 mt-1")
 
 
 @ui.page('/math1014mt')
@@ -256,29 +261,30 @@ async def comp2012hmt_page():
             stud_disp_2.set_text("")
         results_card.set_visibility(True)
 
+    dark_page_setup()
     page_header("Project Ordinal", "COMP2012H Midterm")
     nav_bar()
 
     with ui.column().classes("w-full max-w-2xl mx-auto px-4"):
-        with ui.card().classes("w-full p-8 shadow-md rounded-2xl"):
-            ui.label("Enter your midterm score").classes("text-lg font-semibold text-gray-700 mb-2")
-            ui.label("53 students \u2022 0.25 increment").classes("text-sm text-gray-400 mb-4")
+        with ui.card().classes("w-full p-8 rounded-2xl bg-gray-900 border border-gray-800"):
+            ui.label("Enter your midterm score").classes("text-lg font-semibold text-cyan-400 mb-2")
+            ui.label("53 students \u2022 0.25 increment").classes("text-sm text-gray-500 mb-4")
             ui.input(label='Score', placeholder='e.g. 75',
                     on_change=update_results,
                     validation={}).classes("w-full text-lg")
 
-        results_card = ui.card().classes("w-full p-8 shadow-md rounded-2xl mt-4")
+        results_card = ui.card().classes("w-full p-8 rounded-2xl mt-4 bg-gray-900 border border-gray-800")
         results_card.set_visibility(False)
         with results_card:
-            ui.label("Results").classes("text-lg font-semibold text-gray-700 mb-4")
+            ui.label("Results").classes("text-lg font-semibold text-cyan-400 mb-4")
             with ui.grid(columns=2).classes("w-full gap-6"):
-                with ui.column().classes("bg-blue-50 rounded-xl p-5"):
-                    ui.label("Linear Interpolation").classes("text-xs font-medium text-blue-400 uppercase tracking-wide mb-2")
-                    percentage_disp = ui.label().classes("text-2xl font-bold text-blue-700")
-                    stud_disp = ui.label().classes("text-sm text-blue-500 mt-1")
-                with ui.column().classes("bg-indigo-50 rounded-xl p-5"):
-                    ui.label("Cubic Interpolation").classes("text-xs font-medium text-indigo-400 uppercase tracking-wide mb-2")
-                    percentage_disp_2 = ui.label().classes("text-2xl font-bold text-indigo-700")
-                    stud_disp_2 = ui.label().classes("text-sm text-indigo-500 mt-1")
+                with ui.column().classes("bg-cyan-950/50 rounded-xl p-5 border border-cyan-500/20"):
+                    ui.label("Linear Interpolation").classes("text-xs font-medium text-cyan-500 uppercase tracking-wide mb-2")
+                    percentage_disp = ui.label().classes("text-2xl font-bold text-cyan-300")
+                    stud_disp = ui.label().classes("text-sm text-cyan-600 mt-1")
+                with ui.column().classes("bg-teal-950/50 rounded-xl p-5 border border-teal-500/20"):
+                    ui.label("Cubic Interpolation").classes("text-xs font-medium text-teal-500 uppercase tracking-wide mb-2")
+                    percentage_disp_2 = ui.label().classes("text-2xl font-bold text-teal-300")
+                    stud_disp_2 = ui.label().classes("text-sm text-teal-600 mt-1")
 
 ui.run(title="Project Ordinal")
