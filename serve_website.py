@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import TypedDict
 
 import numpy as np
 from nicegui import ui
@@ -7,7 +8,26 @@ from scipy.interpolate import interp1d
 
 # --- Course Configuration ---
 
-EXAM_COURSES = [
+
+class _ExamCourseComputed(TypedDict, total=False):
+    linear: list[float]
+    cubic: list[float]
+
+
+class ExamCourse(_ExamCourseComputed):
+    route: str
+    nav_label: str
+    title: str
+    subtitle: str
+    label: str
+    placeholder: str
+    total_students: int
+    bin_counts: list[float]
+    score_step: float
+    interp_step: float
+
+
+EXAM_COURSES: list[ExamCourse] = [
     {
         'route': '/math1014mt',
         'nav_label': 'MATH1014 MT',
