@@ -1,6 +1,6 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import scipy.stats as stats
+import numpy as np
+from scipy import stats
 
 # Define the frequency of the bins
 freq = [0, 22, 61, 132, 151, 159, 201, 180, 163, 91, 32]

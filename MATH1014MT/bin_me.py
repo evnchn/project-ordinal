@@ -1,4 +1,7 @@
+import json
+
 import numpy as np
+from scipy.interpolate import interp1d
 
 # Define the bin counts
 bin_counts = np.array([0, 22, 61, 132, 151, 159, 201, 180, 163, 91, 32])
@@ -17,8 +20,6 @@ scores_interpolate = np.arange(0, 101)
 
 #interp_results = np.interp(scores_interpolate, scores, cumulative_freq)
 
-from scipy.interpolate import interp1d
-
 # Create a cubic spline interpolation function
 f = interp1d(scores, cumulative_freq, kind='cubic')
 
@@ -33,8 +34,6 @@ print(interp_results_percentage)
 
 print(interp_results_percentage[80])
 
-import json
-
 with open('MATH1014MT_results_percentage_cubic.json', 'w') as f:
     json.dump(list(interp_results_percentage), f)
 
@@ -47,8 +46,6 @@ interp_results_percentage = 1 - (interp_results / np.max(interp_results))
 print(interp_results_percentage)
 
 print(interp_results_percentage[80])
-
-import json
 
 with open('MATH1014MT_results_percentage.json', 'w') as f:
     json.dump(list(interp_results_percentage), f)

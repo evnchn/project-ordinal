@@ -1,3 +1,5 @@
 nicegui
+numpy
+scipy
 pytest
 pytest-asyncio

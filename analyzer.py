@@ -1,8 +1,8 @@
-from pprint import pprint
-from fractions import Fraction
 import json
+from pprint import pprint
+
 from pdfminer.high_level import extract_pages
-from pdfminer.layout import LTTextBoxHorizontal, LTRect, LTLine
+from pdfminer.layout import LTRect, LTTextBoxHorizontal
 from scipy import stats
 
 point = 0
@@ -11,7 +11,7 @@ y_heights = []
 
 
 # https://stackoverflow.com/a/70967478
-for page_layout in extract_pages("major_selection_briefing_2023_dragged.pdf"):
+for page_layout in extract_pages('major_selection_briefing_2023_dragged.pdf'):
     for element in page_layout:
         if element.bbox[2] - element.bbox[0] < 6 and element.bbox[3] - element.bbox[1] < 6:
             point += 1
@@ -24,15 +24,15 @@ for page_layout in extract_pages("major_selection_briefing_2023_dragged.pdf"):
                 # print("RECT", element.bbox)
                 continue
             if element.bbox[2] - element.bbox[0] > 100:
-                print("HORIZ", element.bbox)
+                print('HORIZ', element.bbox)
                 y_heights.append(element.bbox[1])
             else:
-                print("VERT", element.bbox)
+                print('VERT', element.bbox)
 
 y_heights.sort()
 
 for y_height in y_heights:
-    print(f"{y_height:.15f}")
+    print(f'{y_height:.15f}')
 
 print(y_heights)
 
@@ -66,23 +66,23 @@ print(get_height(0))
 min_height = 871871
 max_height = 000000
 
-for page_layout in extract_pages("major_selection_briefing_2023_dragged.pdf"):
+for page_layout in extract_pages('major_selection_briefing_2023_dragged.pdf'):
     for element in page_layout:
         if element.bbox[2] - element.bbox[0] < 6 and element.bbox[3] - element.bbox[1] < 6:
             height = ((element.bbox[3] + element.bbox[1])/2)
             min_height = min(height, min_height)
             max_height = max(height, max_height)
             cga = get_cga((element.bbox[3] + element.bbox[1])/2)
-            """if cga > 4:
+            '''if cga > 4:
                 #print(cga)
-                pass"""
+                pass'''
             # print(cga)
-print("------BEGIN SCORE OUTPUT-------")
+print('------BEGIN SCORE OUTPUT-------')
 offset = get_cga(max_height) - 4.3
 
 cga_scores = []
 
-for page_layout in extract_pages("major_selection_briefing_2023_dragged.pdf"):
+for page_layout in extract_pages('major_selection_briefing_2023_dragged.pdf'):
     for element in page_layout:
         if element.bbox[2] - element.bbox[0] < 6 and element.bbox[3] - element.bbox[1] < 6:
             height = ((element.bbox[3] + element.bbox[1])/2)
@@ -90,8 +90,7 @@ for page_layout in extract_pages("major_selection_briefing_2023_dragged.pdf"):
             max_height = max(height, max_height)
             cga = get_cga((element.bbox[3] + element.bbox[1])/2) - offset
             if cga > 4 or cga < 0.5:
-                print("{:16.8f}".format(cga))
-                pass
+                print(f'{cga:16.8f}')
             cga_scores.append(cga)
             # print(cga)
 
@@ -112,9 +111,7 @@ print(len(cga_scores_2))
 print(cga_scores_3)
 print(len(cga_scores_3))
 
-pprint(list(zip(cga_scores_2, cga_scores_3)))
-
-cga_scores_3
+pprint(list(zip(cga_scores_2, cga_scores_3, strict=False)))
 
 with open('data_output.json', 'w') as f:
     json.dump(cga_scores_3, f)
@@ -122,12 +119,12 @@ with open('data_output.json', 'w') as f:
 
 
 # for debug and visualization purposes.
-"""for item in cga_scores_3:
+'''for item in cga_scores_3:
     if item[1] > 0.00000000001:
-        input(item[1])"""
+        input(item[1])'''
 
 # Naive method. Doesn't work very accurately
-"""
+'''
 def get_cga_2(height):
     return 4.3/(max_height-min_height)*(height-min_height)
 print("------")
@@ -138,4 +135,4 @@ for page_layout in extract_pages("major_selection_briefing_2023_dragged.pdf"):
             cga = get_cga_2((element.bbox[3] + element.bbox[1])/2)
             if cga > 4 or cga < 0.5:
                 print(cga)
-            #print(cga)"""
+            #print(cga)'''
