@@ -46,3 +46,4 @@ The NiceGUI application listens on port **8080** inside the container. Map it to
 ```
 -p <host_port>:8080
 ```
+# collaboration update
