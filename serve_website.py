@@ -39,6 +39,7 @@ EXAM_COURSES = [
         'label': 'Enter your midterm score',
         'placeholder': 'e.g. 75',
         'total_students': 53,
+        # Some histogram bars fell between horizontal gridlines, giving fractional counts
         'bin_counts': [0, 0, 0, 0, 0, 1, 1, 1, 1, 3, 3, 5, 3, 2, 13, 6.5, 1.5, 4.5, 4.5, 1.5, 1.5],
         'score_step': 5,
         'interp_step': 0.25,
