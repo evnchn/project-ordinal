@@ -113,7 +113,7 @@ def page_header(title, subtitle=None):
 
 
 def nav_bar():
-    items = [('GPA Rank', '/')] + [(str(c['nav_label']), str(c['route'])) for c in EXAM_COURSES]
+    items = [('GPA Rank', '/')] + [(c['nav_label'], c['route']) for c in EXAM_COURSES]
     with ui.row().classes('w-full max-w-2xl mx-auto gap-2 flex-wrap justify-center mb-6'):
         for label, href in items:
             ui.link(label, href).classes(
