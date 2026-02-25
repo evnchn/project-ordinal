@@ -260,7 +260,9 @@ def exam_page(course):
             ui.label(course['label']).classes('text-lg font-semibold text-cyan-400 mb-2')
             ui.label(course['subtitle']).classes('text-sm text-gray-500 mb-4')
             ui.number(label='Score', placeholder=course['placeholder'],
-                      on_change=update_results).classes('w-full text-lg')
+                      on_change=update_results,
+                      validation={'Out of range': lambda v: v is not None and 0 <= v <= 100},
+                      ).classes('w-full text-lg')
 
         results_card = ui.card().classes('w-full p-8 rounded-2xl mt-4 bg-gray-900 border border-gray-800')
         results_card.set_visibility(False)
