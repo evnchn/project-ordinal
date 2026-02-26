@@ -1,0 +1,7 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8086:8080"
+    mem_limit: 512m
+    restart: unless-stopped
